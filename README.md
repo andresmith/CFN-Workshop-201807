@@ -1,6 +1,6 @@
 # CloudFormation-Workshop
 
-# Exercise 1a - AutoScaling Creation Policy
+## Exercise 1a - AutoScaling Creation Policy
 
 In this exercise we will launch a sample template and observe the resource signals received as defined by the autoscaling creation policy:
 
@@ -18,7 +18,7 @@ In this exercise we will launch a sample template and observe the resource signa
 
 - Note that the created EC2 instances are t2.micro (small) instances
 
-# Exercise 1b - AutoScaling Update Policy
+## Exercise 1b - AutoScaling Update Policy
 
 In this exercise we will update the template, replacing the instances with t2.small (medium) instances types
 
@@ -45,23 +45,23 @@ This will cause a new Launch Configuration to be created following which AutoSca
 
 NOTE: At this point the autoscaling group instances will be t2.small (medium) as per the new launch configuration.
 
-# Exercise 1c - Update Rollback Failed
+## Exercise 1c - Update Rollback Failed
 
 In this exercise we will make and out of band change following which we will perform another stack update which will fail, causing the stack to be in a 'UPDATE_ROLLBACK_FAILED' state
 
-## Create a new launch configuration
+### Create a new launch configuration
 
 - In the AWS Console, copy the *launch configuration* created in exercise 1b
 -- Be sure to copy the launch configuration, not *copy to launch template* 
 -- Note the new launch configuration name, eg: excercise1-myLaunchConfig-28I80AK9E852Copy
 - Accept the defaults & create the enw launc configration
 
-## Out of band change
+### Out of band change
 
 - Update the AutoScaling group with the new launch configuration created above
 - Delete the previously CloudFormation created launch configuration (eg excercise1-myLaunchConfig-28I80AK9E852)
 
-## Update the stack
+### Update the stack
 
 - Select the stack in the AWS Console and select 'Update Stack' > use current template
 - Select a *LARGE* (t2.medium) instance type
@@ -95,7 +95,7 @@ At this point, the stack wil start to roll back, and reconfiguring the AutoScali
 19:37:20 UTC+0200	UPDATE_IN_PROGRESS	AWS::AutoScaling::AutoScalingGroup	myAutoScalingGroup
 ```
 
-# Recovering from the UPDATE_ROLLBACK_FAILED state
+### Recovering from the UPDATE_ROLLBACK_FAILED state
 
 In order to recover from the UPDATE_ROLLBACK_FAILED state, we can recreate the launch configuration, giving it the same name which CloudFormation expects (excercise1-myLaunchConfig-28I80AK9E852)
 Once done, we can perform a 'Continue Update Rollback' allowing the rollback to continue
@@ -132,23 +132,23 @@ Your stack should now be in an 'UPDATE_ROLLBACK_COMPLETE' state and the instance
 ```
 
 
-# Exercise 2 - UPDATE_ROLLBACK_FAILED (SKIPPING method)
+## Exercise 2 - UPDATE_ROLLBACK_FAILED (SKIPPING method)
 
 In the previous exercise, when the stack was in an UPDATE_ROLLBACK_FAILED state, we could resolve the issue as we were able to recreate the deleted launch configuration with the same name and then selecting 'Continue Update Rollback'. However in some circumstances, this is not possible, such as for security groups. In this exercise we are going to demonstrate how to recover from such an event.
 
 Also in contrast to the previous exercises where we updated the stack using the same template, but providing a different parameter (EnvironmentSize) which caused new resources to be created, in this exercise we are going to update the stack with separate templates.
 
-## Launching the stack
+### Launching the stack
 
 - Launch the 'exercise-cfn-urf-instance-sg-create.yaml' template, selecting a subnet and VPC for your instance
 - This stack will create an EC2 instance and security group which is referenced by the instance.
 
-## Out of band change
+### Out of band change
 
 - Edit the previously created instance and change it's security group - assign it the *default* security group for the VPC it was launched in
 - *Delete* the security group that was created by CloudFormation during stack creation
 
-## Update the stack
+### Update the stack
 
 - Update the stack with template 'exercise-cfn-urf-instance-sg-update.1.yaml', leave the subnet and VPC as-is
 - This stack differs from the previous template in that
@@ -184,7 +184,7 @@ The stack should now again be in an UPDATE_ROLLBACK_FAILED state, as:
 20:22:18 UTC+0200	UPDATE_IN_PROGRESS	AWS::CloudFormation::Stack	exercise2	User Initiated
 ```
 
-## Recovering from the situation
+### Recovering from the situation
 
 The stack is now in an UPDATE_ROLLBACK_FAILED state, however we have a problem as we will not be able to recreate a security group with a specific ID (eg sg-061e3878940415b63) as these are auto-assigned. 
 
