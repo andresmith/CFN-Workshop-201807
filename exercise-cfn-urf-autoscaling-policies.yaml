@@ -68,7 +68,7 @@ Mappings:
 Conditions:
   hasIamInstanceProfile: 
     !Not [!Equals [!Ref IamInstanceProfile, ""]]
-  hasWaitConditionHandle:
+  hasWaitCondition:
     !Equals [!Ref UpdateWithWaitCondition, yes ]
 
 Resources:
@@ -115,7 +115,7 @@ Resources:
         WaitOnResourceSignals: 'true'
   
   myWaitCondition:
-    Condition: hasWaitConditionHandle
+    Condition: hasWaitCondition
     Type: "AWS::CloudFormation::WaitCondition"
     DependsOn: myAutoScalingGroup
     CreationPolicy:
